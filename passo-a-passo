@@ -1,0 +1,45 @@
+# Criando um Cluster na Digital Ocean 
+
+1  - Acessamos a conta na Digital Ocean;
+2  - Craiamos um cluster Kubernetes;
+3  - Depois do cluster criado faça ao Download do config file (Arquivo que te da acesso ao kunbernetes pelo kubectl);
+4  - Copie o "config file" com o comando "cp D:\Downloads\iniciatica-k8s-kubeconfig.yaml ~/.kube/config";
+5  - Agora vamos verifcar se esta rodando o cluster com o coando "kubectl get nodes"
+6  - Agora vamoms acessar o github e clonar o projeto que vai colocar no cluster kubernetes;
+     Estou usando como exemplo o "git clone https://github.com/FFantasma/rotten-potatoes.git";
+7  - Depois de clonado acesse a pasta e abra com o VSCode;
+8  - Agora vamos executar com o comando "kubectl apply -f k8s/deployment.yaml";
+9  - Agora verficamos com o "kubectl get all" e verificamos se o service/web ja existe o IP externo para acessar a aplicação (143.244.202.145);
+     Vamos deletar tudo para subir agora usando uo CI/CD "kubectl delete -f k8s/deployment.yaml";
+
+# Vamos subir a aplicação criando uma Pipeline CI/CD
+
+1  - Acesse o projeto que vai usar no github;
+2  - Clique na aba "Actions";
+3  - Clique em "set up a workflow yourself" (Nós vamos usar o que vem deefault sem alterar nada);
+4  - Agora vamos clicar no botão "Start Commit" e depois no botão "Commit new file";
+5  - Na próxima tela clique na aba "Actions" e clicamos no workflow "Create main.yaml";
+6  - Na próxima tela vamos disparar a Pipeline clicando no botão "build" e aguardar a Pipeline rodar;
+
+# Construção do processo da Pipeline CI
+
+1  - Agora vamos editar o "main.yaml"
+2  - Primeiro vamos fazer o login no meu dockerhub clicando no "Marketplace" e buscando por "docker login"
+3  - Agora copiamos o conteudo do "docker login" para dentro do workflow file (Edita o aqruivo deixando só username e password);
+4  - Devemos criar as secrets para passar o username e pwd como variáveis em settings>secrets;
+5  - Agora no aqruivo workflow file passamos as váriáveis ${{ secrets.DOCKERHUB_USER }} e ${{ secrets.DOCKERHUB_PWD }} rodamos em modo manual;
+6  - Agora vamos criar o processo de build e push usando o "Build and push Docker images" que pegamos também no Marketplace;
+7  - Devemoms fazer a configuração que fica no github projeto "FFantasma/rotten-potatoes" dentro de "Actions" no comentário "Criação do prcesso de build e Push";
+8  - Depois de configurado e so clicar no botão "Start Commit" e no botão "Commit changes" e aguardar o processo terminar com sucesso;
+9  - Pronto o precesso de CI terminou;
+
+# Construção doprocesso da Pipeline CD
+
+1  - Vamos acessar o arquivo workflow main.yaml para configurar CD;
+2  - Vamos no Markteplace e buscar por "Kubernetes set context" (Podemos usar esse para se conectar com qualque provider);
+3  - Depois que configurar o CD rodamos "Start Commit" e "Commit Changes";
+4  - Agora vamos aplicar os objetos para colocar a actions de exeecução;
+5  - Acesse o "Markteplace" e buscamos o "Deploy to Kubernetes cluster";
+6  - Faço a configuração no Deploy to Kubernetes cluster conforme comentário "Buscar Deploy to Kubernetes cluster";
+7  - Depois que configurar o Deploy to Kubernetes cluster "Start Commit" e "Commit Changes" e aguarda;
+8  - Vamos verificar se a aplicação esta rodando com o comando "kubectl get all";
