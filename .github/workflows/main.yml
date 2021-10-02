@@ -29,6 +29,6 @@ jobs:
           push: true
           tags: |
             gustavohsnascimento/rotten-potatoes:latest
-            gustavohsnascimento/rotten-potatoes:${{ github.run.number }}
+            gustavohsnascimento/rotten-potatoes:${{ github.run_number }}
 
 
