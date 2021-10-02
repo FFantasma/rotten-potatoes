@@ -42,9 +42,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      # Buscar no Markteplace Kubernetes set context
       - name: Kubernetes set context
         uses: Azure/k8s-set-context@v1.1
         with:
           method: kubeconfig
           kubeconfig: ${{ secrets.K8S_CONFIG }}
+       
+      # Buscar no Markteplace Deploy to Kubernetes cluster
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v1.3
+        with:
+          images: gustavohsnascimento/rotten-potatoes:${{ github.run_number }}
+          manifests: |
+            k8s/deployment.yaml
 
