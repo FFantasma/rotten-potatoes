@@ -17,8 +17,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v1.10.0
         with:
-          username: gustavohsnascimento
-          password: 450350Nasciment@Gu2021N@sci
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PWD }}
       
       # Criação do prcesso de build e Push
       - name: Docker Build and Push
